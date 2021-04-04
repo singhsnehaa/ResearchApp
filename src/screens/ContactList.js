@@ -28,7 +28,6 @@ export class ContactList extends Component {
       if (andoidContactPermission === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("Contacts Permission granted");
         Contacts.getAll().then(contacts=> {
-          
           if(contacts){
             this.setState({contactList: contacts});
         } else {
@@ -88,7 +87,7 @@ export class ContactList extends Component {
                 <Left>
                   <Icon type= "Entypo" name="user"/>
                 </Left>
-                <Body>
+                <Body style={{marginRight:2,}}>
                   <Text>{item.displayName} </Text>
                   <Text>{item.phoneNumbers[0].number} </Text>
                 </Body>
