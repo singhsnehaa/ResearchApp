@@ -1,39 +1,22 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
-function Feed() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Feed Screen</Text>
-    </View>
-  );
-}
-
-function Article() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Article Screen</Text>
-    </View>
-  );
-}
-
+import {View, Text} from 'react-native';
+import {HomeScreen} from '../screens/HomeScreen';
+import {ContactList} from '../screens/ContactList';
+import {UploadResume} from '../screens/UploadResume';
+import {VideoList} from '../screens/VideoList';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
 const Drawer = createDrawerNavigator();
-
-function MyDrawer() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Feed" component={Feed} />
-      <Drawer.Screen name="Article" component={Article} />
-    </Drawer.Navigator>
-  );
-}
 
 export default function MainDrawerNavigation() {
   return (
     <NavigationContainer>
-      <MyDrawer />
+      <Drawer.Navigator initialRouteName="HomeScreen">
+        <Drawer.Screen name="HomeScreen" component={HomeScreen} />
+        <Drawer.Screen name="VideoList" component={VideoList} />
+        <Drawer.Screen name="ContactList" component={ContactList} />
+        <Drawer.Screen name="UploadResume" component={UploadResume} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
