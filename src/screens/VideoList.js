@@ -40,7 +40,7 @@ import Video from 'react-native-video';
 export class VideoList extends Component {
   state = {
     videoLink: '',
-    error: false,
+    error: true,
   };
 
   componentDidMount = () => {
@@ -48,7 +48,6 @@ export class VideoList extends Component {
     const accessToken = '74a218e620507395c78219ab9421639c';
     const url =
       'https://api.vimeo.com/videos?access_token=5ee2d57186a6a1c29ab1ed46e0f048dd&links=https://vimeo.com/29474908';
-    //console.log('url=>',url);
     const url2 = 'https://player.vimeo.com/video/470176646';
     const url3 = 'https://player.vimeo.com/video/179859217/config';
     fetch(url3, {
@@ -61,31 +60,22 @@ export class VideoList extends Component {
     })
       .then(response => response.json())
       .then(responseObject => {
-        //console.log('videoLink===>',responseObject.request.files.progressive[0].url);
-        this.setState({
-          videoLink: responseObject.request.files.progressive[0].url,
-        });
+        //console.log('videoLink===>', responseObject.request.files.progressive[0].url,);
+        if (responseObject) {
+          this.setState({
+            videoLink: responseObject.request.files.progressive[0].url,
+            error: false,
+          });
+        } else {
+          this.setState({videoLink: '', error: true});
+        }
       });
   };
 
-  videoBuffer = isBuffer => {
+  onBuffer = isBuffer => {
     console.log('isBuffer=>', isBuffer);
     //here you could set the isBuffer value to the state and then do something with it
     //such as show a loading icon
-  };
-
-  handleError = meta => {
-    const {
-      error: {code},
-    } = meta;
-    let error = 'An error occurred playing this video';
-
-    switch (code) {
-      case -11800:
-        error = 'Could not load video from URL';
-        break;
-    }
-    this.setState({error});
   };
 
   render() {
@@ -127,7 +117,7 @@ export class VideoList extends Component {
         </Header>
 
         <Content padder contentContainerStyle={{justifyContent: 'center'}}>
-          <View style={error ? styles.error : undefined}>
+          {videoLink ? (
             <Video
               source={{uri: videoLink}}
               //source = {require('../assets/big_buck_bunny.mp4')}
@@ -135,38 +125,33 @@ export class VideoList extends Component {
                 this.player = ref;
               }} // Store reference
               onBuffer={this.onBuffer} // Callback when remote video is buffering
-              onError={this.videoError} // Callback when video cannot be loaded
+              //onError={this.videoError} // Callback when video cannot be loaded
               onEnd={this.onEnd}
               //onLoadStart = {this.onLoadStart}                 // Callback when remote video is buffering
               resizeMode={'cover'}
               muted={false}
               repeat={true}
-              resizeMode={'cover'}
               volume={1.0}
               rate={1.0}
-              onError={this.handleError}
-              onBuffer={this.videoBuffer}
               controls={true}
               audioOnly={true}
               //poster="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/English_Cocker_Spaniel_4.jpg/800px-English_Cocker_Spaniel_4.jpg"
               ignoreSilentSwitch={'obey'}
               style={styles.backgroundVideo}
             />
-
-            <View style={styles.videoCover}>
-              {error && (
-                <Icons
-                  size={30}
-                  type={'FontAwesome'}
-                  name={'exclamation-circle'}
-                  style={{
-                    color: COLORS.DARK,
-                  }}
-                />
-              )}
-              {error && <Text>{error}</Text>}
+          ) : (
+            <View style={styles.error}>
+              <Icons
+                size={30}
+                type={'FontAwesome'}
+                name={'exclamation-circle'}
+                style={{
+                  color: COLORS.ERROR,
+                }}
+              />
+              <Text>Could not load video from URL</Text>
             </View>
-          </View>
+          )}
         </Content>
       </Container>
     );
@@ -191,17 +176,13 @@ const styles = StyleSheet.create({
     height: 200,
     width: '100%',
   },
-  videoCover: {
+  error: {
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-    //backgroundColor: 'rgba(255,255,255,.9)',
-  },
-  error: {
-    backgroundColor: '#000',
+    backgroundColor: 'rgba(255,255,255,.9)',
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 200,
+    width: '100%',
   },
 });
