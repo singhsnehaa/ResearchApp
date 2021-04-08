@@ -5,13 +5,15 @@ import {Root} from 'native-base';
 import AppRouter from './src/navigation/Routes';
 import {MainDrawerNavigation} from './src/navigation/MainDrawerNavigation';
 import {RootNavigator} from './src/navigation/CombinedNavigation';
+import {DrawerNavigator} from './src/navigation/DrawerNavigator';
 
 const App = () => {
   return (
     <Root>
       {/* <AppRouter /> */}
-      {/* <MainDrawerNavigation /> */}
-      <RootNavigator />
+      <MainDrawerNavigation />
+      {/* <RootNavigator /> */}
+      {/* <DrawerNavigator /> */}
     </Root>
   );
 };
