@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Icon} from 'react-native-elements';
 import {
   normalize,
   dim,
@@ -23,6 +24,7 @@ export class AppleSignIn extends Component {
 
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>Apple Sign In Screen</Text>
+          <Icon name="sc-telegram" type="evilicon" color="#517fa4" />
         </View>
       </>
     );
